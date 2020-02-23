@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+using System;
 using System.Collections.Generic;
 using System.Security;
 using Microsoft.Identity.Client;
@@ -6,7 +9,7 @@ using Microsoft.Graph;
 using Microsoft.Extensions.Configuration;
 using Helpers;
 
-namespace graphusers01
+namespace graphconsoleapp
 {
   class Program
   {
@@ -38,7 +41,6 @@ namespace graphusers01
       Console.WriteLine("\nGraph Request:");
       Console.WriteLine(requestUserPhoto.GetHttpRequestMessage().RequestUri);
 
-
       // get actual photo
       var requestUserPhotoFile = client.Me.Photo.Content.Request();
       var resultUserPhotoFile = requestUserPhotoFile.GetAsync().Result;
@@ -56,8 +58,8 @@ namespace graphusers01
       // request 2 - user's manager
       var userId = "70c095fe-df9d-4250-867d-f298e237d681";
       var requestUserManager = client.Users[userId]
-                                      .Manager
-                                      .Request();
+                                     .Manager
+                                     .Request();
       var resultsUserManager = requestUserManager.GetAsync().Result;
       Console.WriteLine("   User: " + userId);
       Console.WriteLine("Manager: " + resultsUserManager.Id);
@@ -66,6 +68,29 @@ namespace graphusers01
 
       Console.WriteLine("\nGraph Request:");
       Console.WriteLine(requestUserManager.GetHttpRequestMessage().RequestUri);
+    }
+
+    private static IConfigurationRoot LoadAppSettings()
+    {
+      try
+      {
+        var config = new ConfigurationBuilder()
+                          .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                          .AddJsonFile("appsettings.json", false, true)
+                          .Build();
+
+        if (string.IsNullOrEmpty(config["applicationId"]) ||
+            string.IsNullOrEmpty(config["tenantId"]))
+        {
+          return null;
+        }
+
+        return config;
+      }
+      catch (System.IO.FileNotFoundException)
+      {
+        return null;
+      }
     }
 
     private static IAuthenticationProvider CreateAuthorizationProvider(IConfigurationRoot config, string userName, SecureString userPassword)
@@ -90,14 +115,6 @@ namespace graphusers01
       return graphClient;
     }
 
-    private static string ReadUsername()
-    {
-      string username;
-      Console.WriteLine("Enter your username");
-      username = Console.ReadLine();
-      return username;
-    }
-
     private static SecureString ReadPassword()
     {
       Console.WriteLine("Enter your password");
@@ -116,27 +133,12 @@ namespace graphusers01
       return password;
     }
 
-    private static IConfigurationRoot LoadAppSettings()
+    private static string ReadUsername()
     {
-      try
-      {
-        var config = new ConfigurationBuilder()
-                          .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                          .AddJsonFile("appsettings.json", false, true)
-                          .Build();
-
-        if (string.IsNullOrEmpty(config["applicationId"]) ||
-            string.IsNullOrEmpty(config["tenantId"]))
-        {
-          return null;
-        }
-
-        return config;
-      }
-      catch (System.IO.FileNotFoundException)
-      {
-        return null;
-      }
+      string username;
+      Console.WriteLine("Enter your username");
+      username = Console.ReadLine();
+      return username;
     }
   }
 }
