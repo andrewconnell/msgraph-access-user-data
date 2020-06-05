@@ -30,33 +30,32 @@ namespace graphconsoleapp
       var client = GetAuthenticatedGraphClient(config, userName, userPassword);
 
       // request 1 - current user's photo
+      // var requestUserPhoto = client.Me.Photo.Request();
+      // var resultsUserPhoto = requestUserPhoto.GetAsync().Result;
+      // // display photo metadata
+      // Console.WriteLine("                Id: " + resultsUserPhoto.Id);
+      // Console.WriteLine("media content type: " + resultsUserPhoto.AdditionalData["@odata.mediaContentType"]);
+      // Console.WriteLine("        media etag: " + resultsUserPhoto.AdditionalData["@odata.mediaEtag"]);
 
-      var requestUserPhoto = client.Me.Photo.Request();
-      var resultsUserPhoto = requestUserPhoto.GetAsync().Result;
-      // display photo metadata
-      Console.WriteLine("                Id: " + resultsUserPhoto.Id);
-      Console.WriteLine("media content type: " + resultsUserPhoto.AdditionalData["@odata.mediaContentType"]);
-      Console.WriteLine("        media etag: " + resultsUserPhoto.AdditionalData["@odata.mediaEtag"]);
+      // Console.WriteLine("\nGraph Request:");
+      // Console.WriteLine(requestUserPhoto.GetHttpRequestMessage().RequestUri);
 
-      Console.WriteLine("\nGraph Request:");
-      Console.WriteLine(requestUserPhoto.GetHttpRequestMessage().RequestUri);
+      // // get actual photo
+      // var requestUserPhotoFile = client.Me.Photo.Content.Request();
+      // var resultUserPhotoFile = requestUserPhotoFile.GetAsync().Result;
 
-      // get actual photo
-      var requestUserPhotoFile = client.Me.Photo.Content.Request();
-      var resultUserPhotoFile = requestUserPhotoFile.GetAsync().Result;
+      // // create the file      
+      // var profilePhotoPath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "profilePhoto_" + resultsUserPhoto.Id + ".jpg");
+      // var profilePhotoFile = System.IO.File.Create(profilePhotoPath);
+      // resultUserPhotoFile.Seek(0, System.IO.SeekOrigin.Begin);
+      // resultUserPhotoFile.CopyTo(profilePhotoFile);
+      // Console.WriteLine("Saved file to: " + profilePhotoPath);
 
-      // create the file
-      var profilePhotoPath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "profilePhoto_" + resultsUserPhoto.Id + ".jpg");
-      var profilePhotoFile = System.IO.File.Create(profilePhotoPath);
-      resultUserPhotoFile.Seek(0, System.IO.SeekOrigin.Begin);
-      resultUserPhotoFile.CopyTo(profilePhotoFile);
-      Console.WriteLine("Saved file to: " + profilePhotoPath);
-
-      Console.WriteLine("\nGraph Request:");
-      Console.WriteLine(requestUserPhoto.GetHttpRequestMessage().RequestUri);
+      // Console.WriteLine("\nGraph Request:");
+      // Console.WriteLine(requestUserPhoto.GetHttpRequestMessage().RequestUri);
 
       // request 2 - user's manager
-      var userId = "70c095fe-df9d-4250-867d-f298e237d681";
+      var userId = "851f0875-e1c1-4c7e-bdec-3143bb3d4192";
       var requestUserManager = client.Users[userId]
                                      .Manager
                                      .Request();
